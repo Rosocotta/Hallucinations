@@ -4,8 +4,8 @@ A general content mod for Balatro
 ## Content Additions
 This mod adds the following to the game:
 
-- 23 Jokers
-- 3 Decks
+- 27 Jokers
+- 4 Decks
 - 2 Consumables
 - A new set of consumables containing 9 cards
 - 3 Playing card upgrades

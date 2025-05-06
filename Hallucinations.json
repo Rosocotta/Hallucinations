@@ -1,0 +1,14 @@
+{
+	"id": "Hallucinations",
+	"name": "Hallucinations",
+	"author": ["Rosocotta"],
+	"description": "A general content mod for Balatro",
+	"prefix": "hlucn",
+	"main_file": "Hallucinations.lua",
+	"badge_colour": "98777b",
+	"display_name": "Hallucinations",
+	"version": "1.1.0",
+	"dependencies": [
+		"Steamodded (>=1.0.0~BETA-0323b)"
+	]
+}

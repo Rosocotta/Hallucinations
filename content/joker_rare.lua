@@ -66,7 +66,7 @@ local promopencil = { -- Promotional Pencil: Earns $2 for every joker
   loc_vars = function(self, info_queue, card)
     return{vars = {card.ability.extra.count, ((G.jokers and card.ability.extra.count * #G.jokers.cards) or 2)}}
   end,
-  calculate_dollar_bonus = function()
+  calc_dollar_bonus = function(self, card)
     return card.ability.extra.count * #G.jokers.cards
   end
 }
@@ -162,7 +162,7 @@ local liquidkarma = { -- Liquid Karma: Cards do not score if remaining hands is 
   unlocked = true,
   discovered = false,
   loc_vars = function(self, info_queue, card)
-    return{card.ability.extra.triggers}
+    return{vars = {card.ability.extra.triggers}}
   end,
   calculate = function(self, card, context)
     if context.before and G.GAME.current_round.hands_left % 2 == 0 and not context.blueprint then

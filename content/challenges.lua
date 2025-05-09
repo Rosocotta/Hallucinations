@@ -6,7 +6,7 @@ local testchall = {
     modifiers = {
       {id = "discards", value = 7},
       {id = "hands", value = 8},
-      {id = "dollars", value = 999999999999999}
+      {id = "dollars", value = 99999999}
     }
   },
   restrictions = {
@@ -14,7 +14,7 @@ local testchall = {
     banned_other = {}
   },
   jokers = {
-    {id = "j_hlucn_sudoku"},
+    {id = "j_joker"},
   },
   consumeables = {
   },
@@ -32,6 +32,6 @@ local testchall = {
 
 return{
   items = {
-    testchall
+    --testchall
   }
 }

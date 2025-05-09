@@ -6,8 +6,7 @@ This mod adds the following to the game:
 
 - 27 Jokers
 - 4 Decks
-- 2 Consumables
-- A new set of consumables containing 9 cards
+- 11 Consumables
 - 3 Playing card upgrades
 
 

@@ -4,8 +4,8 @@ local testchall = {
   rules = {
     custom = {},
     modifiers = {
-      {id = "discards", value = 7},
-      {id = "hands", value = 8},
+      {id = "discards", value = 99},
+      {id = "hands", value = 99},
       {id = "dollars", value = 99999999}
     }
   },

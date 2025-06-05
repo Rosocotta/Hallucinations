@@ -5,6 +5,7 @@ local hourglass = { -- Peculiar Hourglass: If no discards are used, creates a ne
   config = {},
   atlas = "jokeratlas",
   pos = {x = 9, y = 0},
+  pools = {["MHalluRareJoker"] = true},
   rarity = 3,
   cost = 11,
   blueprint_compat = true,
@@ -58,6 +59,7 @@ local promopencil = { -- Promotional Pencil: Earns $2 for every joker
   config = {extra = {count = 2}},
   atlas = "jokeratlas",
   pos = {x = 3, y = 1},
+  pools = {["MHalluRareJoker"] = true},
   rarity = 3,
   cost = 11,
   blueprint_compat = true,
@@ -77,6 +79,7 @@ local luckystar = { -- Lucky Star: Various chance based effects
   config = {extra = {odds = 4, chipsval = 180, multval = 20, xmultval = 2.5, cash = 4}},
   atlas = "jokeratlas",
   pos = {x = 5, y = 1},
+  pools = {["MHalluRareJoker"] = true},
   rarity = 3,
   cost = 10,
   blueprint_compat = true,
@@ -117,6 +120,7 @@ local aceofjoker = { -- Ace Of Jokers: Scored Aces give x2 Mult
   config = {extra = {xmultval = 2}},
   atlas = "jokeratlas",
   pos = {x = 6, y = 1},
+  pools = {["MHalluRareJoker"] = true},
   rarity = 3,
   cost = 10,
   blueprint_compat = true,
@@ -127,7 +131,7 @@ local aceofjoker = { -- Ace Of Jokers: Scored Aces give x2 Mult
   end,
   calculate = function(self, card, context)
     if context.individual and context.cardarea == G.play then
-      if context.other_card:get_id() == 14 then
+      if context.other_card:get_id() == 14 and not context.other_card.debuff then
         return{xmult = card.ability.extra.xmultval}
       end
     end
@@ -140,6 +144,7 @@ local runictablet = { -- Runic Tablet: Inscribed cards cap increased to x2.75 In
   config = {},
   atlas = "jokeratlas",
   pos = {x = 7, y = 1},
+  pools = {["MHalluRareJoker"] = true},
   rarity = 3,
   cost = 9,
   unlocked = true,
@@ -156,6 +161,7 @@ local liquidkarma = { -- Liquid Karma: Cards do not score if remaining hands is 
   config = {extra = {triggers = 2}},
   atlas = "jokeratlas",
   pos = {x = 0, y = 2},
+  pools = {["MHalluRareJoker"] = true},
   rarity = 3,
   cost = 10,
   blueprint_compat = true,

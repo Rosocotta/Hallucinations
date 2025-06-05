@@ -136,6 +136,28 @@ return {
           "{C:inactive}(Currently {C:mult}+#1# {C:inactive}Mult){}"
         }
       },
+      j_hlucn_recycling = {
+        name = "Recycling",
+        text = {
+          "Earns {C:gold}$#1#{} when",
+          "a {C:attention}consumable{} is used"
+        }
+      },
+      j_hlucn_birdhieroglyph = {
+        name = "Bird Hieroglyph",
+        text = {
+          "Earns {C:gold}$#1#{} each hand",
+          "{C:gold}$-#2#{} for each card",
+          "in played hand"
+        }
+      },
+      j_hlucn_pridefuljoker = {
+        name = "Prideful Joker",
+        text = {
+          "Played {C:attention}Wild{} cards",
+          "give {C:mult}+#1#{} Mult when scored"
+        }
+      },
       -- Uncommon Jokers
       j_hlucn_mach5 = {
         name = "Mach 5",
@@ -209,6 +231,21 @@ return {
           "when hand is played"
         }
       },
+      j_hlucn_visualnoise = {
+        name = "Visual Noise",
+        text = {
+          "Randomizes the {C:attention}Enhancment{}",
+          "of each card scored"
+        }
+      },
+      j_hlucn_garnetjoker = {
+        name = "Garnet Joker",
+        text = {
+          "Retriggers played {C:attention}Mult{}",
+          "and {C:attention}Bonus{} cards if",
+          "played hand contains {C:attention}both{}"
+        }
+      },
       -- Rare Jokers
       j_hlucn_hourglass = {
         name = "Peculiar Hourglass",
@@ -260,6 +297,228 @@ return {
           "if hands remaining is {C:attention}even{}",
           "Retrigger scored cards {C:attention}#1#{} times",
           "if hands remaining is {C:attention}odd{}"
+        }
+      },
+      -- Resin Jokers
+      j_hlucn_oxresin = {
+        name = "The Ox Resin",
+        text = {
+          "Earns {C:gold}$#1#{} if",
+          "played hand is most",
+          "played {C:attention}poker hand{}",
+        }
+      },
+      j_hlucn_houseresin = {
+        name = "The House Resin",
+        text = {
+          "{X:mult,C:white}X#1#{} Mult on {C:attention}first{}",
+          "{C:attention}hand{} of round if",
+          "no discards were used"
+        }
+      },
+      j_hlucn_clubresin = {
+        name = "The Club Resin",
+        text = {
+          "All played {C:attention}Club{} cards",
+          "become {C:attention}Mult{} cards",
+          "when scored"
+        }
+      },
+      j_hlucn_fishresin = {
+        name = "The Fish Resin",
+        text = {
+          "This Joker gains {X:mult,C:white}X#2#{}",
+          "Mult for every hand",
+          "played this round",
+          "{C:inactive}(Currently {X:mult,C:white}X#1# {C:inactive} Mult){}"
+        }
+      },
+      j_hlucn_windowresin = {
+        name = "The Window Resin",
+        text = {
+          "All played {C:attention}Diamond{} cards",
+          "become {C:attention}Gold{} cards",
+          "when scored"
+        }
+      },
+      j_hlucn_hookresin = {
+        name = "The Hook Resin",
+        text = {
+          "This Joker gains {C:chips}+#2# Chips",
+          "for every card discarded",
+          "{C:inactive}(Currently {C:chips}+#1# {C:inactive}Mult){}"
+        }
+      },
+      j_hlucn_manacleresin = {
+        name = "The Manacle Resin",
+        text = {
+          "Each card held",
+          "in hand gives",
+          "{C:mult}+#1#{} Mult"
+        }
+      },
+      j_hlucn_wallresin = {
+        name = "The Wall Resin",
+        text = {
+          "{X:mult,C:white}X#1#{} Mult"
+        }
+      },
+      j_hlucn_wheelresin = {
+        name = "The Wheel Resin",
+        text = {
+          "{C:green}#1# in #2#{} chance to",
+          "give {C:attention}+#3#{} hand size"
+        }
+      },
+      j_hlucn_armresin = {
+        name = "The Arm Resin",
+        text = {
+          "Creates the {C:blue}Planet{} card",
+          "for final played {C:attention}poker hand{}",
+          "at end of round",
+          "{C:inactive}(Must have room){}"
+        }
+      },
+      j_hlucn_psychicresin = {
+        name = "The Psychic Resin",
+        text = {
+          "This Joker gains {X:mult,C:white}X#2#{} Mult",
+          "if played hand has",
+          "exactly {C:attention}5{} cards",
+          "{C:inactive}(Currently {X:mult,C:white}X#1# {C:inactive}Mult){}"
+        }
+      },
+      j_hlucn_goadresin = {
+        name = "The Goad Resin",
+        text = {
+          "All played {C:attention}Spade{} cards",
+          "become {C:attention}Bonus{} cards",
+          "when scored"
+        }
+      },
+      j_hlucn_waterresin = {
+        name = "The Water Resin",
+        text = {
+          "{C:chips}+#1#{} Chips if you",
+          "have no discards remaining"
+        }
+      },
+      j_hlucn_serpentresin = {
+        name = "The Serpent Resin",
+        text = {
+          "After play or discard",
+          "draw #1# more card"
+        }
+      },
+      j_hlucn_pillarresin = {
+        name = "The Pillar Resin",
+        text = {
+          "Every played {C:attention}card{}",
+          "permanently gains",
+          "{C:mult}+#1#{} Mult when scored"
+        }
+      },
+      j_hlucn_eyeresin = {
+        name = "The Eye Resin",
+        text = {
+          "{C:mult}+#1#{} Mult if played hand",
+          "is not the last hand played",
+          "{C:inactive}(Currently {C:attention}#2#{C:inactive}){}"
+        }
+      },
+      j_hlucn_mouthresin = {
+        name = "The Mouth Resin",
+        text = {
+          "This Joker gains {X:mult,C:white}X#2#{} Mult",
+          "per {C:attention}consecutive{} hand of the",
+          "{C:attention}same{} hand type played",
+          "{C:inactive}(Currently {X:mult,C:white}#1# {C:inactive} Mult){}"
+        }
+      },
+      j_hlucn_plantresin = {
+        name = "The Plant Resin",
+        text = {
+          "This Joker gains {C:chips}+#2#{} Chips",
+          "for each {C:attention}face{} card scored",
+          "{C:inactive}(Currently {C:chips}+#1# {C:inactive}Chips){}"
+        }
+      },
+      j_hlucn_needleresin = {
+        name = "The Needle Resin",
+        text = {
+          "Earns {C:gold}$#1#{} at",
+          "end of round if",
+          "{C:attention}Blind{} was defeated",
+          "in {C:attention}1{} hand"
+        }
+      },
+      j_hlucn_headresin = {
+        name = "The Head Resin",
+        text = {
+          "All played {C:attention}Heart{} cards",
+          "become {C:attention}Glass{} cards",
+          "when scored"
+        }
+      },
+      j_hlucn_toothresin = {
+        name = "The Tooth Resin",
+        text = {
+          "Earns {C:gold}$#1#{}",
+          "each hand"
+        }
+      },
+      j_hlucn_faceresin = {
+        name = "The Face Resin",
+        text = {
+          "Retrigger all",
+          "played {C:attention}face{} cards",
+        }
+      },
+      j_hlucn_flintresin = {
+        name = "The Flint Resin",
+        text = {
+          "{V:1}Balances{} Chips and Mult",
+          "{C:attention}before{} hand is scored"
+        }
+      },
+      j_hlucn_crimsonheartresin = {
+        name = "Crimson Heart Resin",
+        text = {
+          "Cards can't",
+          "be {C:attention}debuffed{}"
+        }
+      },
+      j_hlucn_ceruleanbellresin = {
+        name = "Cerulean Bell Resin",
+        text = {
+          "Select {C:attention}#1#{}",
+          "more card"
+        }
+      },
+      j_hlucn_amberacornresin = {
+        name = "Amber Acorn Resin",
+        text = {
+          "{C:attention}Face down{} playing",
+          "cards held in hand",
+          "give {X:mult,C:white}X#1#{} Mult",
+          "Cards in hand are {C:attention}flipped{}",
+          "when hand is played"
+        }
+      },
+      j_hlucn_verdantleafresin = {
+        name = "Verdant Leaf Resin",
+        text = {
+          "{C:attention}+#3#{} Joker Slot",
+          "This Joker gains {X:mult,C:white}X#2#{} Mult",
+          "when a card is {C:attention}sold",
+          "{C:inactive}(Currently {X:mult,C:white}X#1# {C:inactive}Mult)"
+        }
+      },
+      j_hlucn_violetvesselresin = {
+        name = "Violet Vessel Resin",
+        text = {
+          "All {C:attention}Jokers{} give",
+          "{X:mult,C:white}X#1#{} Mult"
         }
       }
     },
@@ -380,6 +639,78 @@ return {
         }
       }
     },
+    Lunacy = {
+      c_hlucn_absorb = {
+        name = "Absorb",
+        text = {
+          "Creates the {V:1}Resin{} Joker of",
+          "the current {C:attention}Boss Blind{}",
+          "{C:inactive}(Must have room){}"
+        }
+      },
+      c_hlucn_comprehend = {
+        name = "Comprehend",
+        text = {
+          "{C:attention}Transforms{} #1# selected Joker",
+          "into a new Joker",
+          "of the same {C:attention}rarity{}"
+        }
+      },
+      c_hlucn_conceptualize = {
+        name = "Conceptualize",
+        text = {
+          "Destroys the leftmost Joker",
+          "{C:attention}Transforms{} the rightmost Joker",
+          "into a {C:attention}Blueprint{}"
+        }
+      },
+      c_hlucn_memorize = {
+        name = "Memorize",
+        text = {
+          "Destroys selected playing card",
+          "Create a {C:attention}tag{} corresponding to",
+          "the destroyed card's {C:attention}edition{}"
+        }
+      },
+      c_hlucn_release = {
+        name = "Release",
+        text = {
+          "Destroys all {C:attention}Booster Packs{}",
+          "Earn {C:money}${} equal to half",
+          "the {C:attention}total cost{} of them",
+          "{C:inactive}Total is rounded down{}"
+        }
+      },
+      c_hlucn_understand = {
+        name = "Understand",
+        text = {
+          "Disables the current",
+          "{C:attention}Boss Blind{}"
+        }
+      },
+      c_hlucn_unburden = {
+        name = "Unburden",
+        text = {
+          "Costs {C:money}$#2#{} to use",
+          "Destroys a random Joker",
+          "Gives {C:attention}+#1#{} Consumable slot"
+        }
+      },
+      c_hlucn_lament = {
+        name = "Lament",
+        text = {
+          "Selected Joker becomes",
+          "{C:attention}Eternal{} and {C:edition}Foil{}"
+        }
+      },
+      c_hlucn_fantasize = {
+        name = "Fantasize",
+        text = {
+          "Creates a random {C:rare}Rare{}",
+          "{V:1}Hallucinations{} Joker"
+        }
+      }
+    },
     Other = {
       p_hlucn_florid_small_1 = {
         name = "Prosperous Pack",
@@ -413,6 +744,34 @@ return {
           "be used immediately"
         }
       },
+      p_hlucn_lunacy_small_1 = {
+        name = "Madness Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{} {V:1}Lunacy{} cards"
+        }
+      },
+      p_hlucn_lunacy_small_2 = {
+        name = "Madness Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{} {V:1}Lunacy{} cards"
+        }
+      },
+      p_hlucn_lunacy_medium = {
+        name = "Jumbo Madness Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{} {V:1}Lunacy{} cards"
+        }
+      },
+      p_hlucn_lunacy_large = {
+        name = "Mega Madness Pack",
+        text = {
+          "Choose {C:attention}#1#{} of up to",
+          "{C:attention}#2#{} {V:1}Lunacy{} cards"
+        }
+      },
       hlucn_turqoise_seal = {
         name = "Turqoise Seal",
         text = {
@@ -431,11 +790,14 @@ return {
     },
     labels = {
       k_hlucn_pristine = "Pristine",
+      k_hlucn_resin = "Resin",
       hlucn_turqoise_seal = "Turqoise Seal"
     },
     dictionary = {
-      k_hlucn_florid_pack = "Floral Pack",
+      k_hlucn_florid_pack = "Prosperous Pack",
+      k_hlucn_lunacy_pack = "Madness Pack",
       k_hlucn_pristine = "Pristine",
+      k_hlucn_resin = "Resin",
       
       hlucn_msg_reset = "Reset...",
       hlucn_msg_nyoom = "Zoom!",
@@ -447,7 +809,10 @@ return {
       hlucn_msg_destroy_1 = "Obliterated...",
       hlucn_msg_destroy_2 = "Destroyed!",
       hlucn_msg_debuffed = "Debuffed...",
-      hlucn_msg_nothing = "Nothing..."
+      hlucn_msg_nothing = "Nothing...",
+      hlucn_msg_enhance = "Enhanced!",
+      hlucn_msg_success = "Success!",
+      hlucn_msg_balanced = "Balanced!",
     }
   }
 }

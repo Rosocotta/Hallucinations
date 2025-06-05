@@ -28,7 +28,9 @@ local zephyr = { -- Zephyr: +1 Discards. Gains x0.1 Mult for every card discarde
       return{message = ("X" .. card.ability.extra.xcurr), colour = G.C.RED}
     end
     if context.joker_main then
-      return{xmult = card.ability.extra.xcurr}
+      if card.ability.extra.xcurr > 1 then
+        return{xmult = card.ability.extra.xcurr}
+      end
     end
     if context.end_of_round and context.cardarea == G.jokers then
       card.ability.extra.xcurr = 1
@@ -149,13 +151,21 @@ local nihil = { -- Nihil: Retriggers all played cards 2 times for each empty jok
   loc_vars = function(self, info_queue, card)
     return {vars = {card.ability.extra.triggers, card.ability.extra.empty*card.ability.extra.triggers}}
   end,
-  calculate = function(self, card, context)
-    card.ability.extra.empty = G.jokers.config.card_limit - #G.jokers.cards
-    for i=1, #G.jokers.cards do
-      if G.jokers.cards[i].ability.name == "hlucn_nihil" or G.jokers.cards[i].ability.name == "Joker Stencil" then card.ability.extra.empty = card.ability.extra.empty + 1 end
+  update = function(self, card, dt)
+    if G.jokers then
+      card.ability.extra.empty = G.jokers.config.card_limit - #G.jokers.cards
+      for i=1, #G.jokers.cards do
+        if G.jokers.cards[i].ability.name == "hlucn_nihil" or G.jokers.cards[i].ability.name == "Joker Stencil" then card.ability.extra.empty = card.ability.extra.empty + 1 end
+      end
+    else
+      card.ability.extra.empty = 1
     end
+  end,
+  calculate = function(self, card, context)
     if context.cardarea == G.play and context.repetition then
-      return{message = localize("hlucn_msg_repeat"), colour = HEX("000000"), repetitions = card.ability.extra.empty*card.ability.extra.triggers}
+      if not context.other_card.debuff then
+        return{message = localize("hlucn_msg_repeat"), colour = HEX("000000"), repetitions = card.ability.extra.empty*card.ability.extra.triggers}
+      end
     end
   end
 }

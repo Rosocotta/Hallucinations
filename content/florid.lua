@@ -1,6 +1,7 @@
 local florid = {
   object_type = "ConsumableType",
   key = "Floral",
+  default = "c_hlucn_prestige",
   primary_colour = HEX("267F00"),
   secondary_colour = HEX("D1C170"),
   collection_rows = {5, 4},
@@ -32,7 +33,7 @@ local pack1 = {
     end
   end,
   create_card = function(self, card)
-    return create_card("Floral", G.pack_cards, nil, nil, true, false, nil, "hlucn_prestige")
+    return create_card("Floral", G.pack_cards, nil, nil, true, false, nil, "hlucn_florid_small_1")
   end,
   loc_vars = function(self, info_queue, card)
     return{
@@ -63,7 +64,7 @@ local pack2 = {
     end
   end,
   create_card = function(self, card)
-    return create_card("Floral", G.pack_cards, nil, nil, true, false, nil, "hlucn_prestige")
+    return create_card("Floral", G.pack_cards, nil, nil, true, false, nil, "hlucn_florid_small_2")
   end,
   loc_vars = function(self, info_queue, card)
     return{
@@ -83,18 +84,18 @@ local pack3 = {
   pos = {x = 2, y = 0},
   config = {extra = 4, choose = 1},
   cost = 6,
-  weight = 0.85,
+  weight = 0.8,
   draw_hand = true,
   discovered = false,
   get_weight = function(self)
     if next(SMODS.find_card("j_hlucn_floraljoker")) then
-      return 1.1
+      return 1.05
     else
-      return 0.85
+      return 0.8
     end
   end,
   create_card = function(self, card)
-    return create_card("Floral", G.pack_cards, nil, nil, true, false, nil, "hlucn_prestige")
+    return create_card("Floral", G.pack_cards, nil, nil, true, false, nil, "hlucn_florid_medium")
   end,
   loc_vars = function(self, info_queue, card)
     return{
@@ -114,18 +115,18 @@ local pack4 = {
   pos = {x = 3, y = 0},
   config = {extra = 4, choose = 2},
   cost = 8,
-  weight = 0.85,
+  weight = 0.75,
   draw_hand = true,
   discovered = false,
   get_weight = function(self)
     if next(SMODS.find_card("j_hlucn_floraljoker")) then
-      return 1.1
+      return 1
     else
-      return 0.85
+      return 0.75
     end
   end,
   create_card = function(self, card)
-    return create_card("Floral", G.pack_cards, nil, nil, true, false, nil, "hlucn_prestige")
+    return create_card("Floral", G.pack_cards, nil, nil, true, false, nil, "hlucn_florid_large")
   end,
   loc_vars = function(self, info_queue, card)
     return{
@@ -345,47 +346,61 @@ local dissolve = {
     return {vars = {self.config.extra.count, colours = {HEX("D1C170")}}}
   end,
   can_use = function(self, card)
-    return #G.jokers.cards > 0 and G.consumeables.config.card_limit > #G.consumeables.cards
+    local available = false
+    for _, item in ipairs(G.jokers.cards) do
+      if not item.ability.eternal then
+        available = true
+      end
+    end
+    return #G.jokers.cards > 0 and G.consumeables.config.card_limit > #G.consumeables.cards and available
   end,
   use = function(self, card, area, copier)
-    local target = pseudorandom_element(G.jokers.cards, pseudoseed("hlucn_dissolve_check"))
-    G.E_MANAGER:add_event(Event({
-      func = function()
-        play_sound('tarot1')
-        target.T.r = -0.2
-        target:juice_up(0.3, 0.4)
-        target.states.drag.is = true
-        target.children.center.pinch.x = true
-        G.E_MANAGER:add_event(Event({
-          trigger = "after",
-          delay = 0.3,
-          func = function()
-            G.jokers:remove_card(target)
-            target:remove()
-            target = nil
-            return true
-          end
-        }))
-        return true
-      end
-    }))
-    G.E_MANAGER:add_event(Event({
-      trigger = "after",
-      delay = 0.25,
-      func = function()
-        for i=1, math.min(self.config.extra.count, G.consumeables.config.card_limit - #G.consumeables.cards) do
-          if G.consumeables.config.card_limit > #G.consumeables.cards then
-            if i == 1 then
-              play_sound("timpani")
+    local target = nil
+    local seen = {}
+    while target == nil and #seen < #G.jokers.cards do
+      target = pseudorandom_element(G.jokers.cards, pseudoseed("hlucn_dissolve_check"))
+      if not seen[target] then table.insert(seen, #seen+1, target) end
+      if target.ability.eternal then target = nil end
+    end
+    if target then
+      G.E_MANAGER:add_event(Event({
+        func = function()
+          play_sound('tarot1')
+          target.T.r = -0.2
+          target:juice_up(0.3, 0.4)
+          target.states.drag.is = true
+          target.children.center.pinch.x = true
+          G.E_MANAGER:add_event(Event({
+            trigger = "after",
+            delay = 0.3,
+            func = function()
+              G.jokers:remove_card(target)
+              target:remove()
+              target = nil
+              return true
             end
-            local new = create_card("Floral", G.consumeables, nil, nil, false, false, nil, "hlucn_dissolve")
-            new:add_to_deck()
-            G.consumeables:emplace(new)
-          end
+          }))
+          return true
         end
-        return true
-      end
-    }))
+      }))
+      G.E_MANAGER:add_event(Event({
+        trigger = "after",
+        delay = 0.25,
+        func = function()
+          for i=1, math.min(self.config.extra.count, G.consumeables.config.card_limit - #G.consumeables.cards) do
+            if G.consumeables.config.card_limit > #G.consumeables.cards then
+              if i == 1 then
+                play_sound("timpani")
+              end
+              local new = create_card("Floral", G.consumeables, nil, nil, false, false, nil, "hlucn_dissolve")
+              new:add_to_deck()
+              G.consumeables:emplace(new)
+            end
+          end
+          return true
+        end
+      }))
+    end
   end
 }
 local escalate = {
@@ -435,7 +450,6 @@ local maternity = {
   loc_vars = function(self, info_queue, card)
     if mhallu.MaternityGetLast() ~= nil then
       info_queue[#info_queue+1] = G.P_CENTERS[mhallu.MaternityGetLast()]
-      print(tostring(mhallu.MaternityGetLast()))
     end
     return {vars = {colours = {HEX("D1C170")}}}
   end,

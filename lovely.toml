@@ -1,0 +1,22 @@
+[manifest]
+version = "1.0.0"
+dump_lua = true
+priority = 0
+
+#Lets player play 6+ cards in a hand
+[[patches]]
+[patches.pattern]
+target = "functions/button_callbacks.lua"
+pattern = """if #G.hand.highlighted <= 0 or G.GAME.blind.block_play or #G.hand.highlighted > 5 then"""
+position = 'at'
+payload = """if #G.hand.highlighted <= 0 or G.GAME.blind.block_play or #G.hand.highlighted > G.hand.config.highlighted_limit then"""
+match_indent = true
+
+#Context to alter score before cards are scored
+[[patches]]
+[patches.pattern]
+target = "functions/state_events.lua"
+pattern = """if modded then update_hand_text({sound = 'chips2', modded = modded}, {chips = hand_chips, mult = mult}) end"""
+position = 'after'
+payload = """SMODS.calculate_context{cardarea = G.jokers, hlucn_initial_step = true}"""
+match_indent = true

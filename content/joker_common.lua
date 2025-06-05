@@ -15,8 +15,8 @@ local polishedjoker = { -- Polished Joker: Scored glass cards gain +6 Mult
     return {vars = {card.ability.extra.mult}}
   end,
   calculate = function(self, card, context)
-    if context.main_scoring and context.cardarea == G.play then
-      if context.other_card and context.other_card.ability.name == "Glass Card" then
+    if context.individual and context.cardarea == G.play then
+      if context.other_card and mhallu.get_upgrade(context.other_card, "E") == G.P_CENTERS.m_glass and not context.other_card.debuff then
         return{mult = card.ability.extra.mult}
       end
     end
@@ -100,11 +100,11 @@ local sleepparalysis = { -- Sleep Paralysis Demon: When booster pack is skipped,
     end
   end
 }
-local tinyfrog = { -- Tiny Frog: x1.5 Mult if remaining hands is even
+local tinyfrog = { -- Tiny Frog: x1.75 Mult if remaining hands is even
   object_type = "Joker",
   name = "hlucn_tinyfrog",
   key = "tinyfrog",
-  config = {extra = {xmult = 1.5}},
+  config = {extra = {xmult = 1.75}},
   atlas = "jokeratlas",
   pos = {x = 0, y = 1},
   rarity = 1,
@@ -186,7 +186,75 @@ local sudoku = { -- Sudoku: +2 Mult for each consecutive hand without a pair
     end
   end
 }
-
+local recycling = { -- Recycling: Earns $1 when consumable is used
+  object_type = "Joker",
+  name = "hlucn_recycling",
+  key = "recycling",
+  config = {extra = {income = 1}},
+  atlas = "jokeratlas",
+  pos = {x = 4, y = 2},
+  rarity = 1,
+  cost = 5,
+  blueprint_compat = true,
+  unlocked = true,
+  discovered = false,
+  loc_vars = function(self, info_queue, card)
+    return{vars = {card.ability.extra.income}}
+  end,
+  calculate = function(self, card, context)
+    if context.using_consumeable then
+      ease_dollars(card.ability.extra.income)
+      return{message = "$" .. card.ability.extra.income, colour = G.C.GOLD}
+    end
+  end
+}
+local birdhieroglyph = { -- Bird Hieroglyph: Earns $4 each hand. -$1 for every card played
+  object_type = "Joker",
+  name = "hlucn_birdhieroglyph",
+  key = "birdhieroglyph",
+  config = {extra = {income = 4, decay = 1}},
+  atlas = "jokeratlas",
+  pos = {x = 5, y = 2},
+  rarity = 1,
+  cost = 5,
+  blueprint_compat = true,
+  unlocked = true,
+  discovered = false,
+  loc_vars = function(self, info_queue, card)
+    return{vars = {card.ability.extra.income, card.ability.extra.decay}}
+  end,
+  calculate = function(self, card, context)
+    if context.joker_main then
+      local togive = card.ability.extra.income - (card.ability.extra.decay * #context.scoring_hand)
+      ease_dollars(togive)
+      return{message = "$" .. togive, colour = G.C.GOLD}
+    end
+  end
+}
+local pridefuljoker = { -- Prideful Joker: Scored Wild Cards give +6 Mult
+  object_type = "Joker",
+  name = "hlucn_pridefuljoker",
+  key = "pridefuljoker",
+  config = {extra = {mult = 6}},
+  atlas = "jokeratlas",
+  pos = {x = 6, y = 2},
+  rarity = 1,
+  cost = 4,
+  blueprint_compat = true,
+  unlocked = true,
+  discovered = false,
+  loc_vars = function(self, info_queue, card)
+    info_queue[#info_queue+1] = G.P_CENTERS.m_wild
+    return {vars = {card.ability.extra.mult}}
+  end,
+  calculate = function(self, card, context)
+    if context.individual and context.cardarea == G.play then
+      if context.other_card and mhallu.get_upgrade(context.other_card, "E") == G.P_CENTERS.m_wild and not context.other_card.debuff then
+        return{mult = card.ability.extra.mult}
+      end
+    end
+  end
+}
 return{
   items = {
     polishedjoker,
@@ -195,6 +263,9 @@ return{
     sleepparalysis,
     tinyfrog,
     nonogram,
-    sudoku
+    sudoku,
+    recycling,
+    birdhieroglyph,
+    pridefuljoker
   }
 }

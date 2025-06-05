@@ -7,8 +7,8 @@
 	"main_file": "Hallucinations.lua",
 	"badge_colour": "98777b",
 	"display_name": "Hallucinations",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"dependencies": [
-		"Steamodded (>=1.0.0~BETA-0323b)"
+		"Steamodded (>=1.0.0~BETA-0503b)"
 	]
 }

@@ -1,4 +1,4 @@
-function mhallu.infoToInst(input, kind) --Converts various info into another form used by the game
+function mhallu.infoToInst(input, kind) -- Converts various info into another form used by the game
   if kind == "R" or kind == "RL" then
     if type(input) == type("a") then
       if input == "2" then return 2
@@ -85,7 +85,7 @@ function mhallu.infoToInst(input, kind) --Converts various info into another for
   end
 end
 
-function mhallu.get_suit(card, ver) --Returns the suit of a playing card
+function mhallu.get_suit(card, ver) -- Returns the suit of a playing card
   if ver == "L" then
     if card:is_suit("Hearts") or card:is_suit("H") then return "H"
     elseif card:is_suit("Spades") or card:is_suit("S") then return "S"
@@ -103,13 +103,13 @@ function mhallu.get_suit(card, ver) --Returns the suit of a playing card
   end
 end
 
-function mhallu.get_upgrade(card, upgrade) --Returns what upgrade a playing card has as a string
+function mhallu.get_upgrade(card, upgrade) -- Returns what upgrade a playing card has as a string
   if upgrade == "E" or "Enhancement" then return mhallu.infoToInst(card.ability.effect, "E") end
   if upgrade == "D" or "Edition" then return mhallu.infoToInst(card.edition.type, "D") end
   if upgrade == "G" or "Seal" then return card:get_seal() end
 end
 
-function mhallu.change_base(card, suit, rank) --Custom change_base that uses the custom functions
+function mhallu.change_base(card, suit, rank) -- Custom change_base that uses the custom functions
   local loc_ran = card:get_id()
   local loc_sui = mhallu.get_suit(card, "L")
   if rank then loc_ran = rank end
@@ -120,13 +120,105 @@ function mhallu.change_base(card, suit, rank) --Custom change_base that uses the
   return card
 end
 
-function mhallu.temp_debuff(card) --Debuffs cards until end of round
+function mhallu.temp_debuff(card) -- Debuffs cards until end of round
   card:set_debuff(true)
   while card.debuffed == true do
     if G.STATES.NEW_ROUND then
       card:set_debuff(false)
     end
   end
+end
+
+function mhallu.transform_joker(card, forced_key) -- Turns a joker into a new one with the same edition
+  local edition = nil
+  if card.edition then
+    edition = "e_" .. card.edition.type
+  end
+  local rarity = card.config.center.rarity
+  local legendary = false
+  if rarity == 1 then rarity = 0.1 end
+  if rarity == 2 then rarity = 0.71 end
+  if rarity == 3 then rarity = 1 end
+  if rarity == 4 then rarity = nil legendary = true end
+  local eternal = card.ability.eternal
+  local perishable = card.ability.perishable
+  local rental = card.ability.rental
+  G.E_MANAGER:add_event(Event({
+    func = function()
+      play_sound('tarot1')
+      card.T.r = -0.2
+      card:juice_up(0.3, 0.4)
+      card.states.drag.is = true
+      card.children.center.pinch.x = true
+      G.E_MANAGER:add_event(Event({
+        trigger = "after",
+        delay = 0.3,
+        func = function()
+          G.jokers:remove_card(card)
+          card:remove()
+          card = nil
+          return true
+        end
+      }))
+      return true
+    end
+  }))
+  G.E_MANAGER:add_event(Event({
+    trigger = "after",
+    delay = 0.6,
+    func = function()
+      play_sound("timpani")
+      local new = create_card("Joker", G.jokers, legendary, rarity, false, false, forced_key, "hlucn_transform")
+      new:add_to_deck()
+      G.jokers:emplace(new)
+      new:set_edition(edition)
+      new.ability.eternal = eternal
+      new.ability.perishable = perishable
+      new.ability.rental = rental
+      return true
+    end
+  }))
+end
+
+function mhallu.balance_score(chips, mult) -- Returns balanced chips and mult
+  base = chips + mult
+  local newchips = math.floor(base/2) - chips
+  local newmult = math.floor(base/2) - mult
+  return {newchips, newmult}
+end
+
+function mhallu.get_boss_id() -- Converts boss name into something Absorb can use
+  if G.GAME.blind.name then
+    if G.GAME.blind.name == "The Ox" then return "ox"
+    elseif G.GAME.blind.name == "The House" then return "house"
+    elseif G.GAME.blind.name == "The Club" then return "club"
+    elseif G.GAME.blind.name == "The Fish" then return "fish"
+    elseif G.GAME.blind.name == "The Window" then return "window"
+    elseif G.GAME.blind.name == "The Hook" then return "hook"
+    elseif G.GAME.blind.name == "The Manacle" then return "manacle"
+    elseif G.GAME.blind.name == "The Wall" then return "wall"
+    elseif G.GAME.blind.name == "The Wheel" then return "wheel"
+    elseif G.GAME.blind.name == "The Arm" then return "arm"
+    elseif G.GAME.blind.name == "The Psychic" then return "psychic"
+    elseif G.GAME.blind.name == "The Goad" then return "goad"
+    elseif G.GAME.blind.name == "The Water" then return "water"
+    elseif G.GAME.blind.name == "The Serpent" then return "serpent"
+    elseif G.GAME.blind.name == "The Pillar" then return "pillar"
+    elseif G.GAME.blind.name == "The Eye" then return "eye"
+    elseif G.GAME.blind.name == "The Mouth" then return "mouth"
+    elseif G.GAME.blind.name == "The Plant" then return "plant"
+    elseif G.GAME.blind.name == "The Needle" then return "needle"
+    elseif G.GAME.blind.name == "The Head" then return "head"
+    elseif G.GAME.blind.name == "The Tooth" then return "tooth"
+    elseif G.GAME.blind.name == "The Face" then return "face"
+    elseif G.GAME.blind.name == "The Flint" then return "flint"
+    elseif G.GAME.blind.name == "Crimson Heart" then return "crimsonheart"
+    elseif G.GAME.blind.name == "Cerulean Bell" then return "ceruleanbell"
+    elseif G.GAME.blind.name == "Amber Acorn" then return "amberacorn"
+    elseif G.GAME.blind.name == "Verdant Leaf" then return "verdantleaf"
+    elseif G.GAME.blind.name == "Violet Vessel" then return "violetvessel"
+    else return "nil" end
+  else return "nil" end
 end
 
 return{

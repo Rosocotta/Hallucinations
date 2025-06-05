@@ -17,7 +17,7 @@ local mach5 = { -- Mach 5: Played 5s become Steel cards when scored
     if context.cardarea == G.jokers and context.before and not context.blueprint then
       local targets = {}
       for i, c in ipairs(context.scoring_hand) do
-        if c:get_id() == 5 then
+        if c:get_id() == 5 and not c.debuff then
           targets[#targets+1] = c
           c:set_ability(G.P_CENTERS.m_steel, nil, true)
           G.E_MANAGER:add_event(Event({
@@ -94,7 +94,7 @@ local feeltheburn = { -- FEEL THE BURN: Gains +9 Mult when a card is destroyed
   atlas = "jokeratlas",
   pos = {x = 5, y = 0},
   rarity = 2,
-  cost = 7,
+  cost = 6,
   blueprint_compat = true,
   unlocked = true,
   discovered = false,
@@ -155,11 +155,11 @@ local radioactivedice = { -- Radioactive Dice: Irridated cards always give +15 w
     return{}
   end
 }
-local sunflower = { -- Sunflower: Gains x0.35 Mult when Floral card is used
+local sunflower = { -- Sunflower: Gains x0.4 Mult when Floral card is used
   object_type = "Joker",
   name = "hlucn_sunflower",
   key = "sunflower",
-  config = {extra = {multscale = 0.35, multcurr = 1}},
+  config = {extra = {multscale = 0.4, multcurr = 1}},
   atlas = "jokeratlas",
   pos = {x = 2, y = 1},
   rarity = 2,
@@ -171,7 +171,7 @@ local sunflower = { -- Sunflower: Gains x0.35 Mult when Floral card is used
     return{vars = {card.ability.extra.multscale, card.ability.extra.multcurr, colours = {HEX("D1C170")}}}
   end,
   calculate = function(self, card, context)
-    if context.using_consumeable and not context.blueprint and not context.repetition then
+    if context.using_consumeable and not context.blueprint then
       if context.consumeable.ability.set == "Floral" then
         card.ability.extra.multcurr = card.ability.extra.multcurr + card.ability.extra.multscale
         return{message = "X" .. card.ability.extra.multcurr, colour = G.C.RED}
@@ -233,7 +233,90 @@ local miasmajoker = { -- Miasma Joker: Destroys a random playing card in hand
     end
   end
 }
-
+local visualnoise = { -- Visual Noise: Randomizes card enhancements
+  object_type = "Joker",
+  name = "hlucn_visualnoise",
+  key = "visualnoise",
+  config = {},
+  atlas = "jokeratlas",
+  pos = {x = 2, y = 2},
+  rarity = 2,
+  cost = 6,
+  blueprint_compat = true,
+  unlocked = true,
+  discovered = false,
+  loc_vars = function(self, info_queue, card)
+    return {}
+  end,
+  calculate = function(card, self, context)
+    if context.before then
+      local targets = {}
+      for i, c in ipairs(context.scoring_hand) do
+        if not c.debuff then
+          targets[#targets+1] = c
+          local enhance = SMODS.poll_enhancement({key = 'hlucn_visualnoise', guaranteed = true})
+          c:set_ability(enhance, nil, true)
+          G.E_MANAGER:add_event(Event({
+            func = function()
+              c:juice_up()
+              return true
+            end
+          }))
+        end
+      end
+      if #targets > 0 then
+        return{message = localize("hlucn_msg_enhance"), colour = HEX("FF00FF")}
+      end
+    end
+  end
+}
+local garnetjoker = { -- Garnet Joker: Retriggers Mult and Bonus cards if hand contains both
+  object_type = "Joker",
+  name = "hlucn_garnetjoker",
+  key = "garnetjoker",
+  config = {extra = {triggers = 1, active = false}},
+  atlas = "jokeratlas",
+  pos = {x = 3, y = 2},
+  rarity = 2,
+  cost = 7,
+  blueprint_compat = true,
+  unlocked = true,
+  discovered = false,
+  loc_vars = function(self, info_queue, card)
+    info_queue[#info_queue+1] = G.P_CENTERS.m_bonus
+    info_queue[#info_queue+1] = G.P_CENTERS.m_mult
+    return {}
+  end,
+  calculate = function(self, card, context)
+    if context.before then
+      local isbonus = false
+      local ismult = false
+      for i = 1, #context.scoring_hand do
+        if mhallu.get_upgrade(context.scoring_hand[i], "E") == G.P_CENTERS.m_bonus then
+          isbonus = true
+        end
+      end
+      for i = 1, #context.scoring_hand do
+        if mhallu.get_upgrade(context.scoring_hand[i], "E") == G.P_CENTERS.m_mult then
+          ismult = true
+        end
+      end
+      if isbonus and ismult then
+        card.ability.extra.active = true
+      end
+    end
+    if context.cardarea == G.play and context.repetition then
+      if card.ability.extra.active then
+        if mhallu.get_upgrade(context.other_card, "E") == G.P_CENTERS.m_mult or mhallu.get_upgrade(context.other_card, "E") == G.P_CENTERS.m_bonus then
+          return{message = localize("hlucn_msg_repeat"), colour = HEX("841335"), repetitions = card.ability.extra.triggers}
+        end
+      end
+    end
+    if context.end_of_round then
+      card.ability.extra.active = false
+    end
+  end
+}
 return{
   items = {
     mach5,
@@ -244,6 +327,8 @@ return{
     radioactivedice,
     sunflower,
     floraljoker,
-    miasmajoker
+    miasmajoker,
+    visualnoise,
+    garnetjoker
   }
 }

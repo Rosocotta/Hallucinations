@@ -20,7 +20,7 @@ local pack1 = {
   key = "lunacy_small_1",
   atlas = "boosteratlas",
   pos = {x = 0, y = 1},
-  config = {extra = 9, choose = 1},
+  config = {extra = 2, choose = 1},
   cost = 5,
   weight = 0.6,
   draw_hand = false,
